@@ -106,8 +106,14 @@
                   id="name"
                   v-model="name"
                   class="form-control mr-3"
+                  :class="{ 'is-invalid': $v.name.$error }"
                   name="name"
+                  @input="$v.name.$touch()"
+                  required
                 />
+                <div class="invalid-feedback">
+                  Please provide name.
+                </div>
               </div>
               <div class="form-group">
                 <label for="room" id="room">Room</label>
@@ -115,10 +121,15 @@
                   type="text"
                   ref="room"
                   id="room"
+                  :class="{ 'is-invalid': $v.room.$error }"
+                  @input="$v.room.$touch()"
                   v-model="room"
                   class="form-control mr-3"
                   name="room"
                 />
+                <div class="invalid-feedback">
+                  Please provide roomId.
+                </div>
               </div>
               <div class="text-left">
                 <button class="btn btn-primary">Join</button>
@@ -163,9 +174,27 @@ export default {
     })
   },
   methods: {
-    joinRoom() {},
+    joinRoom() {
+      this.$v.$touch()
+      if(!this.$v.$invalid){
+        this.$router.push({
+          name:'home',
+          query:{
+            name:this.name,
+            room:this.room
+          }
+        })
+      }
+    },
   },
-  validations: {},
+  validations: {
+    room: {
+      required,
+    },
+    name: {
+      required,
+    },
+  },
 }
 </script>
 
