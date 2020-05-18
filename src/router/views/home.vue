@@ -43,11 +43,13 @@
               aria-expanded="false"
               >Dropdown</a
             >
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+            <transition enter-active-class="animate__animated animate__zoomIn " leave-active-class="animate__animated animate__zoomOut">
+              <div class="dropdown-menu" aria-labelledby="dropdown01"  v-show="show">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </transition>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -148,7 +150,37 @@ export default {
   },
   components: {},
   data() {
-    return {}
+    return {
+      show: false
+    }
+  },
+  mounted() {
+    let dropdown = $(this.$el).find('.dropdown')
+    let menu = $(this.$el).find('.dropdown-menu')
+
+    dropdown.on('show.bs.dropdown', () => {
+      this.show = true
+    })
+
+    dropdown.on('hide.bs.dropdown', () => {
+      menu.css('display', 'block')
+      this.show = false
+    })
   },
 }
 </script>
+<style scoped>
+.menu-enter-active,
+.menu-leave-active {
+  transition: opacity 0.2s, margin 0.2s;
+}
+
+.menu-enter,
+.menu-leave-to {
+  margin-top: -20px;
+  opacity: 0;
+}
+.animate__animated {
+  --animate-duration: 0.25s;
+}
+</style>
