@@ -14,7 +14,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="navbar-collapse collapse" id="navbarsExampleDefault" style="">
+      <div class="navbar-collapse collapse" id="navbarsExampleDefault" >
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="#"
@@ -43,8 +43,15 @@
               aria-expanded="false"
               >Dropdown</a
             >
-            <transition enter-active-class="animate__animated animate__zoomIn " leave-active-class="animate__animated animate__zoomOut">
-              <div class="dropdown-menu" aria-labelledby="dropdown01"  v-show="show">
+            <transition
+              enter-active-class="animate__animated animate__zoomIn "
+              leave-active-class="animate__animated animate__zoomOut"
+            >
+              <div
+                class="dropdown-menu"
+                aria-labelledby="dropdown01"
+                v-show="show"
+              >
                 <a class="dropdown-item" href="#">Action</a>
                 <a class="dropdown-item" href="#">Another action</a>
                 <a class="dropdown-item" href="#">Something else here</a>
@@ -58,6 +65,7 @@
             type="text"
             placeholder="Search"
             aria-label="Search"
+            v-model="message"
           />
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
             >Search</button
@@ -70,7 +78,7 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <div class="container">
-          <h1 class="display-3">Hello, world!</h1>
+          <h1 class="display-3">Socket.io Basics</h1>
           <p
             >This is a template for a simple marketing or informational website.
             It includes a large callout called a jumbotron and three supporting
@@ -88,47 +96,14 @@
       <div class="container">
         <!-- Example row of columns -->
         <div class="row">
-          <div class="col-md-4">
-            <h2>Heading</h2>
-            <p
-              >Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-              tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-              fermentum massa justo sit amet risus. Etiam porta sem malesuada
-              magna mollis euismod. Donec sed odio dui.
-            </p>
-            <p
-              ><a class="btn btn-secondary" href="#" role="button"
-                >View details »</a
-              ></p
-            >
-          </div>
-          <div class="col-md-4">
-            <h2>Heading</h2>
-            <p
-              >Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-              tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-              fermentum massa justo sit amet risus. Etiam porta sem malesuada
-              magna mollis euismod. Donec sed odio dui.
-            </p>
-            <p
-              ><a class="btn btn-secondary" href="#" role="button"
-                >View details »</a
-              ></p
-            >
-          </div>
-          <div class="col-md-4">
-            <h2>Heading</h2>
-            <p
-              >Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,
-              egestas eget quam. Vestibulum id ligula porta felis euismod
-              semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-              condimentum nibh, ut fermentum massa justo sit amet risus.</p
-            >
-            <p
-              ><a class="btn btn-secondary" href="#" role="button"
-                >View details »</a
-              ></p
-            >
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <h2>Type a message</h2>
+            <form @submit.prevent="sendMessage">
+              <div class="d-flex">
+                <input type="text" ref="message" v-model="message" class="form-control mr-3" name="message" />
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -143,6 +118,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
 export default {
   page: {
     title: 'Home',
@@ -151,21 +127,37 @@ export default {
   components: {},
   data() {
     return {
-      show: false
+      socket: io('http://localhost:3000'),
+      show: false,
+      message:''
     }
   },
   mounted() {
     let dropdown = $(this.$el).find('.dropdown')
     let menu = $(this.$el).find('.dropdown-menu')
-
     dropdown.on('show.bs.dropdown', () => {
       this.show = true
     })
-
     dropdown.on('hide.bs.dropdown', () => {
       menu.css('display', 'block')
       this.show = false
     })
+
+    this.socket.on('connect', () => {
+      console.log('Connected to socket.io server!')
+    })
+    this.socket.on('message', (message) => {
+      console.log('mounted -> data', message)
+    })
+  },
+  methods: {
+    sendMessage() {
+      console.log(this.message)
+      this.socket.emit('message',{
+        text:this.message
+      })
+      this.message =  ''
+    },
   },
 }
 </script>
