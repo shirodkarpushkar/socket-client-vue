@@ -109,7 +109,7 @@
                   :class="{ 'is-invalid': $v.name.$error }"
                   name="name"
                   @input="$v.name.$touch()"
-                  required
+
                 />
                 <div class="invalid-feedback">
                   Please provide name.
@@ -149,6 +149,7 @@
 </template>
 
 <script>
+
 import { required } from 'vuelidate/lib/validators'
 export default {
   page: {
@@ -160,6 +161,7 @@ export default {
       room: '',
       name: '',
       show: false,
+
     }
   },
   mounted() {
@@ -184,6 +186,8 @@ export default {
             room:this.room
           }
         })
+
+
       }
     },
   },
