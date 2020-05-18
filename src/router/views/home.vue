@@ -14,7 +14,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="navbar-collapse collapse" id="navbarsExampleDefault" >
+      <div class="navbar-collapse collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="#"
@@ -98,9 +98,21 @@
         <div class="row">
           <div class="col-md-4 col-sm-6 col-xs-12">
             <h2>Type a message</h2>
+            <div v-for="(el, i) in messages" :key="i">
+              <p
+                ><strong>{{el.name}} {{ el.timestamp | utcTime }}: </strong>
+                {{ el.text }}</p
+              >
+            </div>
             <form @submit.prevent="sendMessage">
               <div class="d-flex">
-                <input type="text" ref="message" v-model="message" class="form-control mr-3" name="message" />
+                <input
+                  type="text"
+                  ref="message"
+                  v-model="message"
+                  class="form-control mr-3"
+                  name="message"
+                />
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
             </form>
@@ -119,18 +131,33 @@
 
 <script>
 import io from 'socket.io-client'
+import moment from 'moment'
 export default {
   page: {
     title: 'Home',
     meta: [{ name: 'description', content: 'Home' }],
   },
-  components: {},
+
   data() {
     return {
       socket: io('http://localhost:3000'),
       show: false,
-      message:''
+      message: '',
+      messages: [],
+      name: '',
     }
+  },
+  filters: {
+    utcTime(val) {
+      return moment
+        .utc(val)
+        .local()
+        .format('h:mma')
+    },
+  },
+  created() {
+    this.name = this.$route.query.name
+    this.room = this.$route.query.room
   },
   mounted() {
     let dropdown = $(this.$el).find('.dropdown')
@@ -148,15 +175,17 @@ export default {
     })
     this.socket.on('message', (message) => {
       console.log('mounted -> data', message)
+      this.messages.push(message)
     })
   },
   methods: {
     sendMessage() {
       console.log(this.message)
-      this.socket.emit('message',{
-        text:this.message
+      this.socket.emit('message', {
+        text: this.message,
+        name:this.name
       })
-      this.message =  ''
+      this.message = ''
     },
   },
 }
