@@ -1,3 +1,140 @@
+<template>
+  <div>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button
+        class="navbar-toggler collapsed"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarsExampleDefault"
+        aria-controls="navbarsExampleDefault"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link disabled"
+              href="#"
+              tabindex="-1"
+              aria-disabled="true"
+              >Disabled</a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="dropdown01"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Dropdown</a
+            >
+            <transition
+              enter-active-class="animate__animated animate__zoomIn "
+              leave-active-class="animate__animated animate__zoomOut"
+            >
+              <div
+                class="dropdown-menu"
+                aria-labelledby="dropdown01"
+                v-show="show"
+              >
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </transition>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            placeholder="Search"
+            aria-label="Search"
+            v-model="message"
+          />
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
+            >Search</button
+          >
+        </form>
+      </div>
+    </nav>
+
+    <main role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">Socket.io Basics</h1>
+          <p
+            >This is a template for a simple marketing or informational website.
+            It includes a large callout called a jumbotron and three supporting
+            pieces of content. Use it as a starting point to create something
+            more unique.</p
+          >
+          <p
+            ><a class="btn btn-primary btn-lg" href="#" role="button"
+              >Learn more »</a
+            ></p
+          >
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <h2>Join Chat</h2>
+            <form @submit.prevent="joinRoom">
+              <div class="form-group">
+                <label for="name" id="name">Name</label>
+                <input
+                  type="text"
+                  ref="name"
+                  id="name"
+                  v-model="name"
+                  class="form-control mr-3"
+                  name="name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="room" id="room">Room</label>
+                <input
+                  type="text"
+                  ref="room"
+                  id="room"
+                  v-model="room"
+                  class="form-control mr-3"
+                  name="room"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <hr />
+      </div>
+      <!-- /container -->
+    </main>
+    <footer class="container">
+      <p>© Company 2017-2019</p>
+    </footer>
+  </div>
+</template>
+
 <script>
 export default {
   page: {
@@ -27,44 +164,6 @@ export default {
   },
 }
 </script>
-
-<template>
-  <div class="wrap-login100">
-    <span class="login100-form-title">
-      Login
-    </span>
-    <form class="login100-form validate-input p-l-55 p-r-55 p-t-20">
-      <div class="wrap-input100 validate-input m-b-16">
-        <input
-          v-model="username"
-          class="input100"
-          type="text"
-          placeholder="Username"
-          required
-        />
-        <span class="focus-input100"></span>
-      </div>
-      <div class="wrap-input100 validate-input">
-        <input
-          v-model="password"
-          class="input100"
-          type="password"
-          placeholder="Password"
-          required
-          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-          title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-        />
-        <span class="focus-input100"></span>
-      </div>
-      <br />
-      <div class="container-login100-form-btn">
-        <button class="login100-form-btn" type="submit" @click="login">
-          Login
-        </button>
-      </div>
-    </form>
-  </div>
-</template>
 
 <style scoped>
 body {
