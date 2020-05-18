@@ -97,10 +97,15 @@
         <!-- Example row of columns -->
         <div class="row">
           <div class="col-md-6 col-sm-6 col-xs-12">
-            <h2>Joined Room : {{room}} </h2>
+            <div class="d-flex ">
+              <h2>Joined Room : {{ room }} </h2>
+              <button class="ml-3 btn btn-primary" @click="leaveRoom">
+                Leave</button
+              >
+            </div>
             <div v-for="(el, i) in messages" :key="i">
               <p
-                ><strong>{{el.name}} {{ el.timestamp | utcTime }}: </strong>
+                ><strong>{{ el.name }} {{ el.timestamp | utcTime }}: </strong>
                 {{ el.text }}</p
               >
             </div>
@@ -145,7 +150,7 @@ export default {
       message: '',
       messages: [],
       name: '',
-      room:''
+      room: '',
     }
   },
   filters: {
@@ -173,11 +178,10 @@ export default {
 
     this.socket.on('connect', () => {
       console.log('Connected to socket.io server!')
-      this.socket.emit('joinRoom',{
-          name: this.name,
-          room: this.room,
-        })
-
+      this.socket.emit('joinRoom', {
+        name: this.name,
+        room: this.room,
+      })
     })
     this.socket.on('message', (message) => {
       console.log('mounted -> data', message)
@@ -185,11 +189,17 @@ export default {
     })
   },
   methods: {
+    leaveRoom() {
+      this.socket.emit('disconnect')
+      this.$$router.push({
+        name:'join'
+      })
+    },
     sendMessage() {
       console.log(this.message)
       this.socket.emit('message', {
         text: this.message,
-        name:this.name
+        name: this.name,
       })
       this.message = ''
     },
