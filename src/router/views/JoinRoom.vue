@@ -65,7 +65,6 @@
             type="text"
             placeholder="Search"
             aria-label="Search"
-
           />
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
             >Search</button
@@ -121,6 +120,9 @@
                   name="room"
                 />
               </div>
+              <div class="text-left">
+                <button class="btn btn-primary">Join</button>
+              </div>
             </form>
           </div>
         </div>
@@ -136,6 +138,7 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 export default {
   page: {
     title: 'Login',
@@ -160,20 +163,9 @@ export default {
     })
   },
   methods: {
-    login() {
-      if (this.username === '') {
-        alert('Please enter username')
-      } else if (this.password === '') {
-        alert('Please enter password')
-      } else {
-        var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
-        if (this.password.match(re)) this.$router.push({ name: 'home' })
-        else {
-          alert('Please enter a valid password!')
-        }
-      }
-    },
+    joinRoom() {},
   },
+  validations: {},
 }
 </script>
 
