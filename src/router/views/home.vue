@@ -97,12 +97,8 @@
         <!-- Example row of columns -->
         <div class="row">
           <div class="col-md-6 col-sm-6 col-xs-12">
-            <div class="d-flex ">
-              <h2>Joined Room : {{ room }} </h2>
-              <button class="ml-3 btn btn-primary" @click="leaveRoom">
-                Leave</button
-              >
-            </div>
+            <h2>Joined Room : {{ room }} </h2>
+
             <div v-for="(el, i) in messages" :key="i">
               <p
                 ><strong>{{ el.name }} {{ el.timestamp | utcTime }}: </strong>
@@ -189,12 +185,6 @@ export default {
     })
   },
   methods: {
-    leaveRoom() {
-      this.socket.emit('disconnect')
-      this.$router.push({
-        name:'join'
-      })
-    },
     sendMessage() {
       console.log(this.message)
       this.socket.emit('message', {
