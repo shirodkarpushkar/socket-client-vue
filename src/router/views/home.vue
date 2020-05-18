@@ -191,7 +191,7 @@ export default {
   methods: {
     leaveRoom() {
       this.socket.emit('disconnect')
-      this.$$router.push({
+      this.$router.push({
         name:'join'
       })
     },
